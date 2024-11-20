@@ -17,6 +17,8 @@ class Schedule(ABC):
         self._blocks = []
         self._creation_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self._objective_value= solved_instance.obj()
+        # Manca l'estrazione del bound duale dal solver. Non dovrebbe essere una cosa del tipo: (controlla come si chiama nell'oggetto solved_instance...
+        self._dual_bound = solved_instance.mip_dual_bound() 
         self._objective_value_initial = objective_value_initial
                
         num_of_blocks = task.master_schedule.get_num_of_blocks()
@@ -82,6 +84,7 @@ class Schedule(ABC):
             'creation date': self._creation_date,
             'objective function value (final)':self._objective_value,
             'objective function value (initial)' : self._objective_value_initial,
+            'lower bound' : self._dual_bound, # Segue da sopra
             'number of blocks': len(self._blocks),
             'blocks':[],
             'patients_not_included':[],
